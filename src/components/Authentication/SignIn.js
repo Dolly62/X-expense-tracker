@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import { Alert, Button, Form, Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { authActions } from "../../store/AuthReducer";
+import CardComponent from "../../UI/Card";
 
 const SignIn = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  //ERROR 
+  //ERROR
   const [alert, setAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState("");
 
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -39,26 +44,34 @@ const SignIn = () => {
         if (response.ok) {
           localStorage.setItem("token", data.idToken);
           localStorage.setItem("email", data.email);
-        } else{
+          dispatch(
+            authActions.login({
+              token: localStorage.getItem("token"),
+              email: localStorage.getItem("email"),
+            })
+          );
+          history.push("/welcome");
+        } else {
           setAlert(true);
           const mapError = (errorCode) => {
             switch (errorCode) {
               case "EMAIL_NOT_FOUND":
                 return "There is no user record corresponding to this email .";
               case "INVALID_PASSWORD":
-                return "The password is invalid."
+                return "The password is invalid.";
               case "USER_DISABLED":
-                return "The user account has been disabled."
+                return "The user account has been disabled.";
               default:
-                return "Authentication failed!"
+                return "Authentication failed!";
             }
-          }
+          };
           setErrorAlert(mapError(data.error));
+          setTimeout(() => {
+            setAlert(false)
+          },2000)
         }
-
       } catch (error) {
-
-      }finally{
+      } finally {
         setIsLoading(false);
         setEnteredEmail("");
         setEnteredPassword("");
@@ -66,10 +79,10 @@ const SignIn = () => {
     }
   };
   return (
-    <Card className="w-3/4 my-8 mx-auto">
+    <CardComponent>
       <Card.Body>
         {alert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 style={{ marginBottom: "20px" }}>Welcome Back!</h2>
+        <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome Back!</h2>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Control
@@ -105,7 +118,7 @@ const SignIn = () => {
           </div>
         </Form>
       </Card.Body>
-    </Card>
+    </CardComponent>
   );
 };
 

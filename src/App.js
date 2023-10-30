@@ -1,17 +1,26 @@
-import { Route } from "react-router-dom/cjs/react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
-import Signup from "./components/Authentication/Signup";
-import SignIn from "./components/Authentication/SignIn";
+import { SignIn, Signup, Welcome, Header } from "./components/AllRoutes/Routes";
+import { useSelector } from "react-redux";
+
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <div className="App">
-      <Route path="/signup">
-      <Signup/>
-      </Route>
-      <Route path="/signin">
-        <SignIn/>
-      </Route>
+      <Header />
+      <Switch>
+        <Route path="/home">
+          <Welcome />
+        </Route>
+        <Route path="/signup">{!isLoggedIn && <Signup />}</Route>
+        <Route path="/signin">
+          <SignIn />
+        </Route>
+        <Route path="/">
+          {isLoggedIn ? <Redirect to="/home" /> : <Redirect to="/signin" />}
+        </Route>
+      </Switch>
     </div>
   );
 }

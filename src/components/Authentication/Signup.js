@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Card, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import CardComponent from "../../UI/Card";
 
 const Signup = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -75,10 +76,10 @@ const Signup = () => {
     }
   };
   return (
-    <Card className="w-3/4 my-8 mx-auto">
+    <CardComponent>
       <Card.Body>
         {alert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 style={{ marginBottom: "20px" }}>Welcome!</h2>
+        <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome!</h2>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Control
@@ -128,7 +129,7 @@ const Signup = () => {
           </div>
         </Form>
       </Card.Body>
-    </Card>
+    </CardComponent>
   );
 };
 
