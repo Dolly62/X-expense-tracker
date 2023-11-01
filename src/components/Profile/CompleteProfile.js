@@ -9,7 +9,6 @@ const CompleteProfile = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [userName, setUserName] = useState("");
 
   const profileHandler = () => {
@@ -41,7 +40,6 @@ const CompleteProfile = () => {
         setUserName(user.displayName);
 
         // console.log(user.displayName);
-        setSuccess(true);
       }
     } catch (error) {
       setError("Failed to fetch profile data.");
@@ -62,7 +60,7 @@ const CompleteProfile = () => {
         className="ml-auto text-danger cursor-pointer"
         onClick={profileHandler}
       >
-        {success ? <span style={{color: "green"}}>{userName}</span> : "Incomplete Profile"}
+        {userName ? <span style={{color: "green"}}>{userName}</span> : "Incomplete Profile"}
       </h5>
     </div>
   );

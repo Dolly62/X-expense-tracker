@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CardComponent from "../../UI/Card";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Profile = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -11,6 +12,8 @@ const Profile = () => {
   const [success, setSuccess] = useState(false);
 
   const token = useSelector((state) => state.auth.token);
+
+  const history = useHistory();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -35,6 +38,7 @@ const Profile = () => {
         throw new Error("Failed to Update");
       }
       const data = await response.json();
+      history.push("/home");
     } catch (error) {
       alert(error.message);
     } finally {

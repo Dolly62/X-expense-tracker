@@ -12,8 +12,7 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   //ERROR
-  const [alert, setAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState("");
+  const [errorAlert, setErrorAlert] = useState(null);
 
   const history = useHistory();
 
@@ -50,9 +49,8 @@ const SignIn = () => {
               email: localStorage.getItem("email"),
             })
           );
-          history.push("/welcome");
+          history.replace("/email-verification");
         } else {
-          setAlert(true);
           const mapError = (errorCode) => {
             switch (errorCode) {
               case "EMAIL_NOT_FOUND":
@@ -67,8 +65,8 @@ const SignIn = () => {
           };
           setErrorAlert(mapError(data.error));
           setTimeout(() => {
-            setAlert(false)
-          },2000)
+            setErrorAlert(null);
+          }, 2000);
         }
       } catch (error) {
       } finally {
@@ -81,7 +79,7 @@ const SignIn = () => {
   return (
     <CardComponent>
       <Card.Body>
-        {alert && <Alert variant="danger">{errorAlert}</Alert>}
+        {errorAlert && <Alert variant="danger">{errorAlert}</Alert>}
         <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome Back!</h2>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="email.ControlInput1">
