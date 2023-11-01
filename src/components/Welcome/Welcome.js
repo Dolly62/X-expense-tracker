@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Card } from "react-bootstrap";
+import CompleteProfile from "../Profile/CompleteProfile";
 
 const Welcome = () => {
   const getCurrentTime = () => {
@@ -15,9 +16,14 @@ const Welcome = () => {
     }
   };
   return (
-    <Card.Body style={{ marginTop: "10%" }}>
-      <Card.Title style={{ fontSize: "1.7rem", color: "purple" }} className="mb-5">
-        {getCurrentTime()}, User!
+    <Fragment>
+      <CompleteProfile/>
+    <Card.Body className="mt-5">
+      <Card.Title
+        style={{ fontSize: "1.7rem", color: "purple" }}
+        className="mb-5"
+      >
+        {getCurrentTime()}
       </Card.Title>
       <Card.Subtitle style={{ fontSize: "1.3rem" }} className="mb-4 text-muted">
         Welcome to ExpenseTrack: Your Smart Expense Management Solution!
@@ -28,6 +34,7 @@ const Welcome = () => {
         your life and revolutionize the way you handle your finances.
       </Card.Text>
     </Card.Body>
+    </Fragment>
   );
 };
 

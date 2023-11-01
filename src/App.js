@@ -1,6 +1,6 @@
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
-import { SignIn, Signup, Welcome, Header } from "./components/AllRoutes/Routes";
+import { SignIn, Signup, Welcome, Header, Profile } from "./components/AllRoutes/Routes";
 import { useSelector } from "react-redux";
 
 
@@ -12,6 +12,10 @@ function App() {
       <Switch>
         <Route path="/home">
           <Welcome />
+        </Route>
+        <Route path="/profile">
+          {isLoggedIn && <Profile />}
+          {!isLoggedIn && <Redirect to="signin"/>}
         </Route>
         <Route path="/signup">{!isLoggedIn && <Signup />}</Route>
         <Route path="/signin">

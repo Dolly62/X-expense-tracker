@@ -81,7 +81,7 @@ const Signup = () => {
         {alert && <Alert variant="danger">{errorAlert}</Alert>}
         <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome!</h2>
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Group className="mb-3" controlId="email.ControlInput1">
             <Form.Control
               type="email"
               placeholder="name@example.com"
