@@ -54,20 +54,19 @@ const Signup = () => {
             case "EMAIL_EXISTS":
               return "This Email is already exists.";
             case "OPERATION_NOT_ALLOWED":
-              return "You are not allowed to register new user."
+              return "You are not allowed to register new user.";
             case "TOO_MANY_ATTEMPTS_TRY_LATER":
-              return "Too many attempts. Try again later."
+              return "Too many attempts. Try again later.";
             default:
-              return "Authentication failed!"
+              return "Authentication failed!";
           }
-        }
+        };
         setErrorAlert(mapError(data.error));
         setTimeout(() => {
           setAlert(false);
         }, 2000);
       }
     } catch (error) {
-      
     } finally {
       setIsLoading(false);
       setEnteredEmail("");
@@ -79,7 +78,9 @@ const Signup = () => {
     <CardComponent>
       <Card.Body>
         {alert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome!</h2>
+        <h2 className="mb-6" style={{ color: "purple" }}>
+          Welcome!
+        </h2>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="email.ControlInput1">
             <Form.Control
@@ -122,7 +123,7 @@ const Signup = () => {
           <div className="mt-3">
             <button
               onClick={() => history.replace("/signin")}
-              style={{ color: " rgb(255, 213, 0)" }}
+              className="text-yellow-400"
             >
               Already have an account?
             </button>{" "}

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { authActions } from "../../store/AuthReducer";
 import CardComponent from "../../UI/Card";
+import Password from "./Password";
 
 const SignIn = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -80,7 +81,9 @@ const SignIn = () => {
     <CardComponent>
       <Card.Body>
         {errorAlert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 style={{ marginBottom: "20px", color: "purple" }}>Welcome Back!</h2>
+        <h2 className="mb-6" style={{ color: "purple" }}>
+          Welcome Back!
+        </h2>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="email.ControlInput1">
             <Form.Control
@@ -100,16 +103,17 @@ const SignIn = () => {
           </Form.Group>
           <Button
             type="submit"
-            style={{ marginTop: "10px" }}
+            className="mt-2"
             variant="success"
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Submit"}
           </Button>
           <div className="mt-3">
+            <Password />
             <button
               onClick={() => history.replace("/signup")}
-              style={{ color: " rgb(255, 213, 0)" }}
+              className="text-yellow-400"
             >
               Don't have an account?
             </button>{" "}

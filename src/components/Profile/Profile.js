@@ -85,7 +85,7 @@ const Profile = () => {
             variant="success"
             disabled={isLoading}
           >
-            {isLoading ? "Loading..." : "Submit"}
+            {isLoading ? "Loading..." : "Update"}
           </Button>
         </Form>
       </Card.Body>
