@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Card, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import CardComponent from "../../UI/Card";
+import Heading from "../../UI/Heading";
 
 const Signup = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -78,9 +79,9 @@ const Signup = () => {
     <CardComponent>
       <Card.Body>
         {alert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 className="mb-6" style={{ color: "purple" }}>
+        <Heading>
           Welcome!
-        </h2>
+        </Heading>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="email.ControlInput1">
             <Form.Control

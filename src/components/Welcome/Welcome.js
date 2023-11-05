@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import CompleteProfile from "../Profile/CompleteProfile";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Welcome = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const history = useHistory()
 
   const getCurrentTime = () => {
     const currentHour = new Date().getHours();
@@ -39,6 +41,7 @@ const Welcome = () => {
           spreadsheets and receipts piling up! ExpenseTrack is here to simplify
           your life and revolutionize the way you handle your finances.
         </Card.Text>
+        {isLoggedIn && <Button onClick={() => history.push("/expenses")}>Add Expenses</Button>}
       </Card.Body>
     </Fragment>
   );

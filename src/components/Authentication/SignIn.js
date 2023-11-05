@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { authActions } from "../../store/AuthReducer";
 import CardComponent from "../../UI/Card";
 import Password from "./Password";
+import Heading from "../../UI/Heading";
 
 const SignIn = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -81,9 +82,9 @@ const SignIn = () => {
     <CardComponent>
       <Card.Body>
         {errorAlert && <Alert variant="danger">{errorAlert}</Alert>}
-        <h2 className="mb-6" style={{ color: "purple" }}>
+        <Heading>
           Welcome Back!
-        </h2>
+        </Heading>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="email.ControlInput1">
             <Form.Control

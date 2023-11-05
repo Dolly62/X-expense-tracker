@@ -5,7 +5,7 @@ const CardComponent = (props) => {
   return (
     <Card
       style={{ background: "rgb(255, 236, 255)", border: "none" }}
-      className="w-75 my-8 mx-auto"
+      className="w-75 my-8 mx-auto text-center"
     >
       {props.children}
     </Card>

@@ -8,10 +8,23 @@ import {
   Profile,
   EmailVer,
 } from "./components/AllRoutes/Routes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ExpenseForm from "./components/Expenses/ExpenseForm";
+import { useEffect } from "react";
+import { fetchExpense } from "./store/ExpenseActionCreator";
+import { expenseActions } from "./store/ExpensesReducer";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if(isLoggedIn){
+      dispatch(fetchExpense())
+    }else{
+      dispatch(expenseActions.clearExpensesState());
+    }
+  })
   return (
     <div className="App">
       <Header />
@@ -21,6 +34,10 @@ function App() {
         </Route>
         <Route path="/profile">
           {isLoggedIn && <Profile />}
+          {!isLoggedIn && <Redirect to="signin" />}
+        </Route>
+        <Route path="/expenses">
+          {isLoggedIn && <ExpenseForm />}
           {!isLoggedIn && <Redirect to="signin" />}
         </Route>
         <Route path="/signup">{!isLoggedIn && <Signup />}</Route>

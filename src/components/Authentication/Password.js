@@ -48,8 +48,8 @@ const Password = () => {
 
       <Modal show={show} onHide={closeHandler}>
         <CardComponent>
-          <Card.Body className="text-center">
-            <h2>Reset Your Password</h2>
+          <Card.Body>
+            <h2 className="mb-3" style={{ color: "purple" }}>Reset Your Password</h2>
             {isEmailSent ? (
               <p>Mail Sent Successfully! Please check your email inbox.</p>
             ) : (
@@ -64,7 +64,7 @@ const Password = () => {
                     required
                   />
                 </Form.Group>
-                <Button variant="success" disabled={isLoading}>
+                <Button variant="success" onClick={passwordResetHandler} disabled={isLoading}>
                   {isLoading ? "Sending..." : "Send link"}
                 </Button>
               </>
