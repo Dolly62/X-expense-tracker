@@ -9,7 +9,7 @@ const Header = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <Fragment>
-      <Navbar style={{ background: "purple" }} expand="sm">
+      <Navbar className="mb-5" style={{ background: "purple" }} expand="sm">
         <Container>
           <Navbar.Brand
             href="/"

@@ -47,6 +47,7 @@ const Password = () => {
       </div>
 
       <Modal show={show} onHide={closeHandler}>
+        <Modal.Header className="border-0" closeButton/>
         <CardComponent>
           <Card.Body>
             <h2 className="mb-3" style={{ color: "purple" }}>Reset Your Password</h2>

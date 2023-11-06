@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Heading from "../../UI/Heading";
 import { expenseActions } from "../../store/ExpensesReducer";
 import ExpensesList from "./ExpensesList";
+import CustomCategories from "./CustomCategories";
 
 const ExpenseForm = () => {
   const [enteredDescription, setEnteredDescription] = useState("");
@@ -12,6 +13,8 @@ const ExpenseForm = () => {
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+
+  const categories = useSelector(state => state.category.categories)
 
   const [show, setShow] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -49,35 +52,41 @@ const ExpenseForm = () => {
       const data = await response.json();
       if (response.ok) {
         setFeedback({ type: "success", message: "Added Successfully!" });
-        dispatch(expenseActions.addExpenses({
-          name: data.name,
-          enteredDescription,
-          spentPrice,
-          category,
-          selectedDate,
-          selectedTime,
-        }))
+        dispatch(
+          expenseActions.addExpenses({
+            name: data.name,
+            enteredDescription,
+            spentPrice,
+            category,
+            selectedDate,
+            selectedTime,
+          })
+        );
       }
     } catch {
       setFeedback({ type: "error", message: "Failed to add" });
     } finally {
       setTimeout(() => {
         setFeedback(null);
-      }, 2000);
+      }, 1000);
       setEnteredDescription("");
       setSpentPrice("");
       setCategory("");
       setSelectedDate("");
       setSelectedTime("");
+      closeHandler();
     }
   };
   return (
     <>
-      <Button onClick={showHandler} variant="success" className="mt-5">
-        Add Expense
-      </Button>
+      <div className="mb-5">
+        <Button onClick={showHandler} variant="success">
+          Add Expense
+        </Button>
+        <CustomCategories />
+      </div>
 
-      <ExpensesList/>
+      <ExpensesList />
 
       <Modal show={show} onHide={closeHandler}>
         <Modal.Header className="border-0" closeButton />
@@ -142,9 +151,12 @@ const ExpenseForm = () => {
                 aria-label="Default select example"
               >
                 <option>Select category</option>
-                <option value="fruit">Fruit</option>
-                <option value="vegetable">Vegetable</option>
-                <option value="grocery">Grocery</option>
+                <option value="Fruit">Fruit</option>
+                <option value="Vegetable">Vegetable</option>
+                <option value="Grocery">Grocery</option>
+                {categories && (
+                  categories.map((cate) => <option key={cate.name} id={cate.name}>{cate.enteredCategories}</option>)
+                )}
               </Form.Select>
               <Button type="submit" variant="success" className="mt-3">
                 Add Expense
