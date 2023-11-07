@@ -8,7 +8,7 @@ export const fetchExpense = () => {
 
     try {
       const response = await fetch(
-        `https://x-expense43-default-rtdb.firebaseio.com/expenses/${editEmail}.json`
+        `https://x-expense43-default-rtdb.firebaseio.com/expenses/${editEmail}/Userexpenses.json`
       );
 
       const data = await response.json();

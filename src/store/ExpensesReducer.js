@@ -15,6 +15,26 @@ const expenseSlice = createSlice({
       state.items = action.payload.expense;
       state.totalAmount = action.payload.totalAmount;
     },
+    deleteExpense(state, action) {
+      const expenseToDel = state.items.find(
+        (delExpense) => delExpense.name === action.payload
+      );
+      if (expenseToDel) {
+        state.items = state.items.filter(
+          (expenseDeleted) => expenseDeleted.name !== action.payload
+        );
+        state.totalAmount -= expenseToDel.spentPrice;
+      }
+    },
+    updatedExpense(state, action) {
+      const updatedExpenseIndex = state.items.findIndex(
+        (expense) => expense.name === action.payload.name
+      );
+      if (updatedExpenseIndex !== -1) {
+        state.items[updatedExpenseIndex] = action.payload;
+        state.totalAmount += action.payload.spentPrice;
+      }
+    },
     clearExpensesState(state) {
       state.items = [];
     },

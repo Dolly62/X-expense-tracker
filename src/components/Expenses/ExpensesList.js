@@ -1,16 +1,47 @@
 import React from "react";
 import CardComponent from "../../UI/Card";
-import { useSelector } from "react-redux";
-import { Card, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Card, Table } from "react-bootstrap";
 import CustomCategoriesList from "./CustomCategoriesList";
+import { useState } from "react";
+import { TiDelete, TiEdit } from "react-icons/ti";
+import { expenseActions } from "../../store/ExpensesReducer";
 
-const ExpensesList = () => {
+const ExpensesList = (props) => {
   const expenses = useSelector((state) => state.expenses.items);
+
+  const email = useSelector((state) => state.auth.email);
+
+  const [feedback, setFeedback] = useState(null);
+
+  const dispatch = useDispatch();
 
   const totalAmount = (expenses || []).reduce(
     (totalAmount, expense) => totalAmount + parseFloat(expense.spentPrice),
     0
   );
+
+  const deleteExpenseHandler = async (name) => {
+    const emailId = email.replace(/[@.]/g, "");
+    try {
+      const response = await fetch(
+        `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}/Userexpenses/${name}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        setFeedback({ type: "success", message: "Successfully Deleted!" });
+        dispatch(expenseActions.deleteExpense(name));
+      }
+    } catch (error) {
+      setFeedback({ type: "error", message: "Failed to delete" });
+    } finally {
+      setTimeout(() => {
+        setFeedback(null);
+      }, 2000);
+    }
+  };
 
   return (
     <CardComponent>
@@ -21,6 +52,11 @@ const ExpensesList = () => {
         <Card.Title>
           Total Amount: <span>Rs.{totalAmount.toFixed(2)}</span>
         </Card.Title>
+        {feedback && (
+          <Alert variant={feedback.type} className="border-0 bg-transparent">
+            {feedback.message}
+          </Alert>
+        )}
         <Table responsive>
           <thead>
             <tr>
@@ -39,6 +75,19 @@ const ExpensesList = () => {
                   <td>Rs.{expense.spentPrice}</td>
                   <td>
                     {expense.selectedDate}, {expense.selectedTime}
+                  </td>
+                  <td>
+                    <TiDelete
+                      title="delete"
+                      className="text-xl text-red-600"
+                      onClick={() => deleteExpenseHandler(expense.name)}
+                    />
+
+                    <TiEdit
+                      title="edit"
+                      className="text-xl text-yellow-300"
+                      onClick={() => props.onEdit(expense)}
+                    />
                   </td>
                 </tr>
               ))

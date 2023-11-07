@@ -13,8 +13,9 @@ const ExpenseForm = () => {
   const [category, setCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [editExpenseName, setEditExpenseName] = useState(null);
 
-  const categories = useSelector(state => state.category.categories)
+  const categories = useSelector((state) => state.category.categories);
 
   const [show, setShow] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -25,6 +26,17 @@ const ExpenseForm = () => {
   const email = useSelector((state) => state.auth.email);
 
   const dispatch = useDispatch();
+
+  // ------------------------------------------------EDIT EXPENSE-------------------------------------------------//
+  const editExpenseHandler = (expense) => {
+    showHandler();
+    setEditExpenseName(expense.name);
+    setEnteredDescription(expense.enteredDescription);
+    setSpentPrice(expense.spentPrice);
+    setCategory(expense.category);
+    setSelectedDate(expense.selectedDate);
+    setSelectedTime(expense.selectedTime);
+  };
 
   const addExpenseHandler = async (e) => {
     e.preventDefault();
@@ -42,26 +54,53 @@ const ExpenseForm = () => {
     };
 
     try {
-      const response = await fetch(
-        `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}.json`,
-        {
-          method: "POST",
-          body: JSON.stringify(expenseForm),
-        }
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setFeedback({ type: "success", message: "Added Successfully!" });
-        dispatch(
-          expenseActions.addExpenses({
-            name: data.name,
-            enteredDescription,
-            spentPrice,
-            category,
-            selectedDate,
-            selectedTime,
-          })
+      if (editExpenseName === null) {
+        const response = await fetch(
+          `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}/Userexpenses.json`,
+          {
+            method: "POST",
+            body: JSON.stringify(expenseForm),
+          }
         );
+        const data = await response.json();
+        if (response.ok) {
+          setFeedback({ type: "success", message: "Added Successfully!" });
+          dispatch(
+            expenseActions.addExpenses({
+              name: data.name,
+              enteredDescription,
+              spentPrice,
+              category,
+              selectedDate,
+              selectedTime,
+            })
+          );
+        }
+      } else {
+        const response = await fetch(
+          `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}/Userexpenses/${editExpenseName}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(expenseForm),
+          }
+        );
+        // const data = await response.json();
+        // console.log(data);
+        if (response.ok) {
+          setFeedback({ type: "success", message: "Updated Successfully!" });
+          dispatch(
+            expenseActions.updatedExpense({
+              name: editExpenseName,
+              enteredDescription,
+              spentPrice,
+              category,
+              selectedDate,
+              selectedTime,
+            })
+          );
+          setEditExpenseName(null);
+          closeHandler();
+        }
       }
     } catch {
       setFeedback({ type: "error", message: "Failed to add" });
@@ -80,26 +119,26 @@ const ExpenseForm = () => {
   return (
     <>
       <div className="mb-5">
+        {feedback && (
+          <Alert
+            style={{ color: "green" }}
+            className="border-0 bg-transparent"
+            variant={feedback.type}
+          >
+            {feedback.message}
+          </Alert>
+        )}
         <Button onClick={showHandler} variant="success">
           Add Expense
         </Button>
         <CustomCategories />
       </div>
 
-      <ExpensesList />
+      <ExpensesList onEdit={editExpenseHandler} />
 
       <Modal show={show} onHide={closeHandler}>
         <Modal.Header className="border-0" closeButton />
         <CardComponent>
-          {feedback && (
-            <Alert
-              style={{ color: "green" }}
-              className="border-0 bg-transparent"
-              variant={feedback.type}
-            >
-              {feedback.message}
-            </Alert>
-          )}
           <Card.Body>
             <Heading>Add Your Expenses</Heading>
             <Form onSubmit={addExpenseHandler}>
@@ -154,12 +193,15 @@ const ExpenseForm = () => {
                 <option value="Fruit">Fruit</option>
                 <option value="Vegetable">Vegetable</option>
                 <option value="Grocery">Grocery</option>
-                {categories && (
-                  categories.map((cate) => <option key={cate.name} id={cate.name}>{cate.enteredCategories}</option>)
-                )}
+                {categories &&
+                  categories.map((cate) => (
+                    <option key={cate.name} id={cate.name}>
+                      {cate.enteredCategories}
+                    </option>
+                  ))}
               </Form.Select>
               <Button type="submit" variant="success" className="mt-3">
-                Add Expense
+                {editExpenseName !== null ? "Save" : "Add Expense"}
               </Button>
             </Form>
           </Card.Body>
