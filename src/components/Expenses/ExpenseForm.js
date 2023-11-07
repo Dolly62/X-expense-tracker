@@ -190,9 +190,6 @@ const ExpenseForm = () => {
                 aria-label="Default select example"
               >
                 <option>Select category</option>
-                <option value="Fruit">Fruit</option>
-                <option value="Vegetable">Vegetable</option>
-                <option value="Grocery">Grocery</option>
                 {categories &&
                   categories.map((cate) => (
                     <option key={cate.name} id={cate.name}>

@@ -15,6 +15,7 @@ import { fetchExpense } from "./store/ExpenseActionCreator";
 import { expenseActions } from "./store/ExpensesReducer";
 import { fetchCategories } from "./store/CategoryActionCreator";
 import { categoryActions } from "./store/CategoryReducer";
+import CustomCategoriesList from "./components/Expenses/CustomCategoriesList";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -42,6 +43,10 @@ function App() {
         </Route>
         <Route path="/expenses">
           {isLoggedIn && <ExpenseForm />}
+          {!isLoggedIn && <Redirect to="signin" />}
+        </Route>
+        <Route path="/customcategories">
+          {isLoggedIn && <CustomCategoriesList />}
           {!isLoggedIn && <Redirect to="signin" />}
         </Route>
         <Route path="/signup">{!isLoggedIn && <Signup />}</Route>

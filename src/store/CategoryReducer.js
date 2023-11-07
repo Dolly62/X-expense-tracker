@@ -12,6 +12,16 @@ const categorySlice = createSlice({
     replaceCategories(state, action) {
       state.categories = action.payload.category;
     },
+    deleteCategory(state, action) {
+      const categoryToDel = state.categories.find(
+        (delCategory) => delCategory.name === action.payload
+      );
+      if (categoryToDel) {
+        state.categories = state.categories.filter(
+          (categoryDeleted) => categoryDeleted.name !== action.payload
+        );
+      }
+    },
     clearCategories(state) {
       state.categories = [];
     },

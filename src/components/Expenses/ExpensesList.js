@@ -2,10 +2,11 @@ import React from "react";
 import CardComponent from "../../UI/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Card, Table } from "react-bootstrap";
-import CustomCategoriesList from "./CustomCategoriesList";
 import { useState } from "react";
 import { TiDelete, TiEdit } from "react-icons/ti";
 import { expenseActions } from "../../store/ExpensesReducer";
+import { useHistory } from "react-router-dom";
+import { BiSolidCategory } from "react-icons/bi";
 
 const ExpensesList = (props) => {
   const expenses = useSelector((state) => state.expenses.items);
@@ -15,6 +16,12 @@ const ExpensesList = (props) => {
   const [feedback, setFeedback] = useState(null);
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
+
+  const customCategoriesHandler = () => {
+    history.push("/customcategories");
+  };
 
   const totalAmount = (expenses || []).reduce(
     (totalAmount, expense) => totalAmount + parseFloat(expense.spentPrice),
@@ -45,7 +52,15 @@ const ExpensesList = (props) => {
 
   return (
     <CardComponent>
-      <CustomCategoriesList />
+      <div className="d-flex mr-8 mt-3">
+        <button
+          title="Custom categories"
+          className="ml-auto text-2xl"
+          onClick={customCategoriesHandler}
+        >
+          <BiSolidCategory />
+        </button>
+      </div>
       <Card.Title>All Expenses</Card.Title>
 
       <CardComponent>
@@ -53,7 +68,7 @@ const ExpensesList = (props) => {
           Total Amount: <span>Rs.{totalAmount.toFixed(2)}</span>
         </Card.Title>
         {feedback && (
-          <Alert variant={feedback.type} className="border-0 bg-transparent">
+          <Alert className="border-0 bg-transparent">
             {feedback.message}
           </Alert>
         )}

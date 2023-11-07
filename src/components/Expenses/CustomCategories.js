@@ -10,6 +10,8 @@ const CustomCategories = () => {
   const [enteredCategories, setEnteredCategories] = useState("");
   const [show, setShow] = useState(false);
 
+  const categories = useSelector((state) => state.category.categories);
+
   const showHandler = () => setShow(true);
   const closeHandler = () => setShow(false);
 
@@ -23,33 +25,41 @@ const CustomCategories = () => {
     e.preventDefault();
 
     const emailId = email.replace(/[@.]/g, "");
-    try {
-      const response = await fetch(
-        `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}/categories.json`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            enteredCategories,
-          }),
-        }
-      );
-      const data = await response.json();
-    //   console.log(data);
-      if (response.ok) {
-        setFeedback({ type: "success", message: "Added Successfully" });
-        dispatch(
-          categoryActions.addCategories({
-            name: data.name,
-            enteredCategories,
-          })
+    const isCategoryExists = categories.some(
+      (category) => category.enteredCategories === enteredCategories
+    );
+    if (isCategoryExists) {
+      setFeedback({ type: "error", message: "Category already exists!" });
+      setTimeout(() => setFeedback(null), 2000);
+    } else {
+      try {
+        const response = await fetch(
+          `https://x-expense43-default-rtdb.firebaseio.com/expenses/${emailId}/categories.json`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              enteredCategories,
+            }),
+          }
         );
+        const data = await response.json();
+        //   console.log(data);
+        if (response.ok) {
+          setFeedback({ type: "success", message: "Added Successfully" });
+          dispatch(
+            categoryActions.addCategories({
+              name: data.name,
+              enteredCategories,
+            })
+          );
+        }
+      } catch (error) {
+        setFeedback({ type: "error", message: "Failed to add" });
+      } finally {
+        setTimeout(() => setFeedback(null), 2000);
+        setEnteredCategories("");
+        closeHandler();
       }
-    } catch (error) {
-      setFeedback({ type: "error", message: "Failed to add" });
-    } finally {
-      setTimeout(() => setFeedback(null), 1000);
-      setEnteredCategories("");
-      closeHandler();
     }
   };
   return (
@@ -58,7 +68,7 @@ const CustomCategories = () => {
         Add Custom Categories
       </Button>
 
-      <Modal show={show} onHide={closeHandler}>
+      <Modal show={show} onHide={closeHandler} className="text-center">
         <Modal.Header className="border-0" closeButton />
         {feedback && (
           <Alert variant={feedback.type} className="border-0 bg-transparent">
