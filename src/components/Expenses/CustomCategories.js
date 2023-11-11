@@ -64,17 +64,17 @@ const CustomCategories = () => {
   };
   return (
     <Fragment>
+        {feedback && (
+          <Alert variant={feedback.type} className="border-0 bg-transparent">
+            {feedback.message}
+          </Alert>
+        )}
       <Button className="ml-5" onClick={showHandler}>
         Add Custom Categories
       </Button>
 
       <Modal show={show} onHide={closeHandler} className="text-center">
         <Modal.Header className="border-0" closeButton />
-        {feedback && (
-          <Alert variant={feedback.type} className="border-0 bg-transparent">
-            {feedback.message}
-          </Alert>
-        )}
         <CardComponent>
           <Card.Body>
             <Heading>Add Custom Categories</Heading>

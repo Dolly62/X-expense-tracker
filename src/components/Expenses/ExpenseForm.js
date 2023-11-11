@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Heading from "../../UI/Heading";
 import { expenseActions } from "../../store/ExpensesReducer";
 import ExpensesList from "./ExpensesList";
-import CustomCategories from "./CustomCategories";
 
 const ExpenseForm = () => {
   const [enteredDescription, setEnteredDescription] = useState("");
@@ -131,7 +130,6 @@ const ExpenseForm = () => {
         <Button onClick={showHandler} variant="success">
           Add Expense
         </Button>
-        <CustomCategories />
       </div>
 
       <ExpensesList onEdit={editExpenseHandler} />

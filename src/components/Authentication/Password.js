@@ -56,6 +56,7 @@ const Password = () => {
             ) : (
               <>
                 <p>Enter the email with which you have registered:</p>
+                <Form onSubmit={passwordResetHandler}>
                 <Form.Group className="mb-3" controlId="password.ControlInput1">
                   <Form.Control
                     type="password"
@@ -65,9 +66,10 @@ const Password = () => {
                     required
                   />
                 </Form.Group>
-                <Button variant="success" onClick={passwordResetHandler} disabled={isLoading}>
+                <Button type="submit" variant="success" disabled={isLoading}>
                   {isLoading ? "Sending..." : "Send link"}
                 </Button>
+                </Form>
               </>
             )}
           </Card.Body>

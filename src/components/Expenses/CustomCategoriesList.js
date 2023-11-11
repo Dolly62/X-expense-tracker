@@ -2,9 +2,10 @@ import React from "react";
 import CardComponent from "../../UI/Card";
 import { Alert, Card, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { TiDelete, TiEdit } from "react-icons/ti";
+import { TiDelete } from "react-icons/ti";
 import { useState } from "react";
 import { categoryActions } from "../../store/CategoryReducer";
+import CustomCategories from "./CustomCategories";
 
 const CustomCategoriesList = () => {
   const [feedback, setFeedback] = useState();
@@ -23,7 +24,7 @@ const CustomCategoriesList = () => {
         }
       );
       if (response.ok) {
-        setFeedback({ type: "success", message: "Successfully Delete!" });
+        setFeedback({ type: "success", message: "Successfully Deleted!" });
         dispatch(categoryActions.deleteCategory(name));
       }
     } catch (error) {
@@ -34,37 +35,41 @@ const CustomCategoriesList = () => {
   };
 
   return (
-    <CardComponent>
-      <Card.Title className="mt-3">Custom Categories</Card.Title>
-      {feedback && (
-        <Alert className="border-0 bg-transparent">{feedback.message}</Alert>
-      )}
+    <>
+      <div className="mb-5">
+        <CustomCategories />
+      </div>
       <CardComponent>
-        <Table>
-          <tbody>
-            {categories && categories.length > 0 ? (
-              categories.map((category) => (
-                <tr key={category.name} id={category.id}>
-                  <td>{category.enteredCategories}</td>
-                  <td>
-                    <TiDelete
-                      title="delete"
-                      className="text-xl text-red-600"
-                      onClick={() => deleteCategoryHandler(category.name)}
-                    />
-                    <TiEdit title="edit" className="text-xl text-yellow-300" />
-                  </td>
+        <Card.Title className="mt-3">Custom Categories</Card.Title>
+        {feedback && (
+          <Alert variant={feedback.type} className="border-0 bg-transparent">{feedback.message}</Alert>
+        )}
+        <CardComponent>
+          <Table>
+            <tbody>
+              {categories && categories.length > 0 ? (
+                categories.map((category) => (
+                  <tr key={category.name} id={category.id}>
+                    <td>{category.enteredCategories}</td>
+                    <td>
+                      <TiDelete
+                        title="delete"
+                        className="text-xl text-red-600"
+                        onClick={() => deleteCategoryHandler(category.name)}
+                      />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4">No Categories Found</td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">No Categories Found</td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
+              )}
+            </tbody>
+          </Table>
+        </CardComponent>
       </CardComponent>
-    </CardComponent>
+    </>
   );
 };
 

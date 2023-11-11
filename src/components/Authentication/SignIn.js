@@ -51,7 +51,7 @@ const SignIn = () => {
               email: localStorage.getItem("email"),
             })
           );
-          history.replace("/email-verification");
+          history.replace("/home");
         } else {
           const mapError = (errorCode) => {
             switch (errorCode) {

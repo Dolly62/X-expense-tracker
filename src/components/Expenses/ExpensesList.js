@@ -7,6 +7,7 @@ import { TiDelete, TiEdit } from "react-icons/ti";
 import { expenseActions } from "../../store/ExpensesReducer";
 import { useHistory } from "react-router-dom";
 import { BiSolidCategory } from "react-icons/bi";
+import Filtered from "./Filtered";
 
 const ExpensesList = (props) => {
   const expenses = useSelector((state) => state.expenses.items);
@@ -14,6 +15,7 @@ const ExpensesList = (props) => {
   const email = useSelector((state) => state.auth.email);
 
   const [feedback, setFeedback] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -50,6 +52,10 @@ const ExpensesList = (props) => {
     }
   };
 
+  const filteredExpenses = selectedCategory
+    ? expenses.filter((expense) => expense.category === selectedCategory)
+    : expenses;
+
   return (
     <CardComponent>
       <div className="d-flex mr-8 mt-3">
@@ -61,16 +67,20 @@ const ExpensesList = (props) => {
           <BiSolidCategory />
         </button>
       </div>
-      <Card.Title>All Expenses</Card.Title>
+      <div className="d-flex ml-11">
+        <Card.Title>All Expenses</Card.Title>
+        <Filtered
+          selectedCategory={selectedCategory}
+          onCategorySelect={setSelectedCategory}
+        />
+      </div>
 
       <CardComponent>
         <Card.Title>
           Total Amount: <span>Rs.{totalAmount.toFixed(2)}</span>
         </Card.Title>
         {feedback && (
-          <Alert className="border-0 bg-transparent">
-            {feedback.message}
-          </Alert>
+          <Alert className="border-0 bg-transparent">{feedback.message}</Alert>
         )}
         <Table responsive>
           <thead>
@@ -82,8 +92,8 @@ const ExpensesList = (props) => {
             </tr>
           </thead>
           <tbody>
-            {expenses && expenses.length > 0 ? (
-              expenses.map((expense) => (
+            {filteredExpenses.length > 0 ? (
+              filteredExpenses.map((expense) => (
                 <tr key={expense.name} id={expense.id}>
                   <td>{expense.enteredDescription}</td>
                   <td>{expense.category}</td>
