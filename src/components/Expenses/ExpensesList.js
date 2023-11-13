@@ -70,7 +70,7 @@ const ExpensesList = (props) => {
       </div>
 
       <CardComponent>
-        <div className="d-flex ml-11">
+        <div className="d-flex mb-3">
           <Card.Title>All Expenses</Card.Title>
           <Filtered
             selectedCategory={selectedCategory}
@@ -90,6 +90,7 @@ const ExpensesList = (props) => {
               <th>Category</th>
               <th>Amount</th>
               <th>Date/Time</th>
+              <th>...</th>
             </tr>
           </thead>
           <tbody>
@@ -98,7 +99,7 @@ const ExpensesList = (props) => {
                 <tr key={expense.name} id={expense.id}>
                   <td>{expense.enteredDescription}</td>
                   <td>{expense.category}</td>
-                  <td>Rs.{expense.spentPrice}</td>
+                  <td style={{color: "red"}}>Rs.{expense.spentPrice}</td>
                   <td>
                     {expense.selectedDate}, {expense.selectedTime}
                   </td>

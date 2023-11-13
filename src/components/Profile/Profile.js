@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CardComponent from "../../UI/Card";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import EmailVer from "../Authentication/EmailVer";
 
 const Profile = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -14,6 +15,8 @@ const Profile = () => {
   const token = useSelector((state) => state.auth.token);
 
   const history = useHistory();
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -37,7 +40,7 @@ const Profile = () => {
       if (!response.ok) {
         throw new Error("Failed to Update");
       }
-      const data = await response.json();
+      // const data = await response.json();
       history.push("/home");
     } catch (error) {
       alert(error.message);
@@ -52,7 +55,47 @@ const Profile = () => {
     }
   };
 
-  return (
+
+
+  const updateProfileDataHandler = useCallback( async () => {
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAeQAn4MNp3AyuZaFns_Zrzu4apdac6DCY",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            idToken: token,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const data = await response.json();
+      // console.log(data);
+      // console.log(data.providerUserInfo);
+      if (data.providerUserInfo && data.providerUserInfo.length > 0) {
+        const user = data.providerUserInfo[0];
+        setEnteredName(user.displayName);
+        setProfileUrl(user.photoUrl)
+        // console.log(user.displayName);
+      }
+    } catch (error) {
+     alert(error.message)
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      updateProfileDataHandler();
+    }
+  }, [isLoggedIn, updateProfileDataHandler]);
+
+  return (<>
+  <EmailVer/>
     <CardComponent>
       <Card.Body>
         {success && (
@@ -90,6 +133,7 @@ const Profile = () => {
         </Form>
       </Card.Body>
     </CardComponent>
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ const Filtered = (props) => {
 
   return (
     <NavDropdown
-      className="px-2 rounded-pill border-2 ml-2"
+      className="p-1 rounded-xl ml-2 text-sm"
       title="Filter"
       id="basic-filter-dropdown"
     >

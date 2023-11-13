@@ -20,6 +20,7 @@ import { categoryActions } from "./store/CategoryReducer";
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -31,7 +32,7 @@ function App() {
     }
   });
   return (
-    <div className="App">
+    <div className={`App ${isDarkMode ? "dark-mode": ""}`}>
       <Header />
       <Switch>
         <Route path="/home">

@@ -11,7 +11,7 @@ const EmailVer = () => {
 
   const token = useSelector((state) => state.auth.token);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const emailVerificationHandler = async () => {
     setIsLoading(true);
@@ -54,29 +54,29 @@ const EmailVer = () => {
     }
   };
 
-  const VerifyHandler = () => {
-    history.replace("/home")
-  }
   return (
-    <CardComponent >
+    <>
       {errorMsg && (
         <Alert style={{ background: "none", border: "none", color: "red" }}>
           {errorMsg}
         </Alert>
       )}
-      {verficationSent ? (
-        <p className="text-green-500" >Verfication Sent Successfully! Please check your inbox.</p>
+      {verficationSent ? (<>
+        <p className="text-green-500">
+          Verfication Sent Successfully! Please check your inbox.
+        </p>
+        </>
       ) : (
-        <Button className="w-75 mx-auto mt-6"
+        <button
+          className="w-48 mx-auto mt-6"
           variant="success"
           onClick={emailVerificationHandler}
           disabled={isLoading}
         >
-          {isLoading ? "Sending..." : "Send Verfication Email"}
-        </Button>
+          {isLoading ? "Sending..." : "Verify Your Email"}
+        </button>
       )}
-      <Button className="w-50 mx-auto my-6" onClick={VerifyHandler}>Verify</Button>
-    </CardComponent>
+    </>
   );
 };
 

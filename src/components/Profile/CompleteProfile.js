@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, NavLink } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const CompleteProfile = () => {
     history.push("/profile");
   };
 
-  const fetchProfileDataHandler = async () => {
+  const fetchProfileDataHandler = useCallback(async () => {
     try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAeQAn4MNp3AyuZaFns_Zrzu4apdac6DCY",
@@ -44,23 +44,35 @@ const CompleteProfile = () => {
     } catch (error) {
       setError("Failed to fetch profile data.");
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (isLoggedIn) {
       fetchProfileDataHandler();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, fetchProfileDataHandler]);
+
+  // const firstLetter = userName.charAt(0);
+  // console.log(firstLetter);
 
   return (
-    <div className="d-flex mr-8 mt-3">
+    <div>
       {error && <Alert variant="danger">{error}</Alert>}
       <h5
         title="Edit profile"
-        className="ml-auto text-danger cursor-pointer"
+        className="text-danger cursor-pointer"
         onClick={profileHandler}
       >
-        {userName ? <span style={{color: "green"}}>{userName}</span> : "Incomplete Profile"}
+        {userName ? (
+          <span
+            className=" rounded-lg p-2 text-xl mr-6"
+            style={{ color: "green" }}
+          >
+            Profile
+          </span>
+        ) : (
+          "Incomplete Profile"
+        )}
       </h5>
     </div>
   );
