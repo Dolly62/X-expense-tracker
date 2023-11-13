@@ -4,10 +4,23 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../store/AuthReducer";
 import { useHistory } from "react-router-dom";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { useEffect } from "react";
 
 const Signout = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const timeout = 3600000; //1hr
+
+  //--------------------------------AUTO LOGOUT AFTER 1HR. --------------------------------------//
+  useEffect(() => {
+    const timer = setInterval(() => {
+      dispatch(authActions.logout());
+    }, timeout);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [dispatch, timeout]);
 
   const logoutHandler = () => {
     dispatch(authActions.logout());

@@ -67,15 +67,15 @@ const ExpensesList = (props) => {
           <BiSolidCategory />
         </button>
       </div>
-      <div className="d-flex ml-11">
-        <Card.Title>All Expenses</Card.Title>
-        <Filtered
-          selectedCategory={selectedCategory}
-          onCategorySelect={setSelectedCategory}
-        />
-      </div>
 
       <CardComponent>
+        <div className="d-flex ml-11">
+          <Card.Title>All Expenses</Card.Title>
+          <Filtered
+            selectedCategory={selectedCategory}
+            onCategorySelect={setSelectedCategory}
+          />
+        </div>
         <Card.Title>
           Total Amount: <span>Rs.{totalAmount.toFixed(2)}</span>
         </Card.Title>

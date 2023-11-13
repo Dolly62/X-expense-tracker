@@ -7,15 +7,15 @@ import {
   Header,
   Profile,
   EmailVer,
+  ExpenseForm,
+  CustomCategoriesList
 } from "./components/AllRoutes/Routes";
 import { useDispatch, useSelector } from "react-redux";
-import ExpenseForm from "./components/Expenses/ExpenseForm";
 import { useEffect } from "react";
 import { fetchExpense } from "./store/ExpenseActionCreator";
 import { expenseActions } from "./store/ExpensesReducer";
 import { fetchCategories } from "./store/CategoryActionCreator";
 import { categoryActions } from "./store/CategoryReducer";
-import CustomCategoriesList from "./components/Expenses/CustomCategoriesList";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
