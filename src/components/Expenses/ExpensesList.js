@@ -6,8 +6,8 @@ import { useState } from "react";
 import { TiDelete, TiEdit } from "react-icons/ti";
 import { expenseActions } from "../../store/ExpensesReducer";
 import { useHistory } from "react-router-dom";
-import { BiSolidCategory } from "react-icons/bi";
 import Filtered from "./Filtered";
+import DownloadExpense from "./DownloadExpense";
 
 const ExpensesList = (props) => {
   const expenses = useSelector((state) => state.expenses.items);
@@ -58,13 +58,14 @@ const ExpensesList = (props) => {
 
   return (
     <CardComponent>
-      <div className="d-flex mr-8 mt-3">
+      <div className="d-flex my-3">
+        <DownloadExpense/>
         <button
           title="Custom categories"
-          className="ml-auto text-2xl"
+          className="mr-4 bg-purple-400 rounded-3xl p-2 text-xs"
           onClick={customCategoriesHandler}
         >
-          <BiSolidCategory />
+          Categories
         </button>
       </div>
 
