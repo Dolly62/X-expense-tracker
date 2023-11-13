@@ -1,3 +1,4 @@
+import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 import {
@@ -7,8 +8,6 @@ import {
   Header,
   Profile,
   EmailVer,
-  ExpenseForm,
-  CustomCategoriesList
 } from "./components/AllRoutes/Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -31,8 +30,16 @@ function App() {
       dispatch(categoryActions.clearCategories());
     }
   });
+
+  const ExpenseForm = React.lazy(() =>
+    import("./components/Expenses/ExpenseForm")
+  );
+  const CustomCategoriesList = React.lazy(() =>
+    import("./components/Expenses/CustomCategoriesList")
+  );
+
   return (
-    <div className={`App ${isDarkMode ? "dark-mode": ""}`}>
+    <div className={`App ${isDarkMode ? "dark-mode" : ""}`}>
       <Header />
       <Switch>
         <Route path="/home">
@@ -43,11 +50,15 @@ function App() {
           {!isLoggedIn && <Redirect to="signin" />}
         </Route>
         <Route path="/expenses">
-          {isLoggedIn && <ExpenseForm />}
+          <React.Suspense fallback={<div>Loading...</div>}>
+            {isLoggedIn && <ExpenseForm />}
+          </React.Suspense>
           {!isLoggedIn && <Redirect to="signin" />}
         </Route>
         <Route path="/customcategories">
-          {isLoggedIn && <CustomCategoriesList />}
+          <React.Suspense fallback={<div>Loading...</div>}>
+            {isLoggedIn && <CustomCategoriesList />}
+          </React.Suspense>
           {!isLoggedIn && <Redirect to="signin" />}
         </Route>
         <Route path="/signup">{!isLoggedIn && <Signup />}</Route>
